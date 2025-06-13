@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Quiz Game</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f6fa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .quiz-container {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      width: 400px;
+      text-align: center;
+    }
+
+    .question {
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+
+    .options button {
+      display: block;
+      margin: 10px 0;
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border: 2px solid #3498db;
+      background-color: white;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .options button:hover {
+      background-color: #3498db;
+      color: white;
+    }
+
+    #result {
+      font-size: 18px;
+      margin-top: 20px;
+      color: green;
+    }
+
+    #score {
+      font-size: 22px;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="quiz-container">
+  <div id="quiz">
+    <div class="question" id="question">Loading...</div>
+    <div class="options">
+      <button onclick="checkAnswer(0)" id="btn0"></button>
+      <button onclick="checkAnswer(1)" id="btn1"></button>
+      <button onclick="checkAnswer(2)" id="btn2"></button>
+      <button onclick="checkAnswer(3)" id="btn3"></button>
+    </div>
+    <div id="result"></div>
+    <div id="score"></div>
+  </div>
+</div>
+
+<script>
+  const quizData = [
+    {
+      question: "What is the capital of India?",
+      options: ["Mumbai", "Delhi", "Chennai", "Kolkata"],
+      answer: 1
+    },
+    {
+      question: "Which planet is known as the Red Planet?",
+      options: ["Earth", "Jupiter", "Mars", "Venus"],
+      answer: 2
+    },
+    {
+      question: "Who wrote the national anthem of India?",
+      options: ["Bankim Chandra", "Rabindranath Tagore", "Gandhi", "Subhash Chandra Bose"],
+      answer: 1
+    }
+  ];
+
+  let currentQuestion = 0;
+  let score = 0;
+
+  function loadQuestion() {
+    if (currentQuestion < quizData.length) {
+      const q = quizData[currentQuestion];
+      document.getElementById("question").innerText = q.question;
+      q.options.forEach((opt, i) => {
+        document.getElementById("btn" + i).innerText = opt;
+      });
+      document.getElementById("result").innerText = "";
+    } else {
+      document.getElementById("quiz").innerHTML = `
+        <h2>Quiz Finished!</h2>
+        <p id="score">Your Score: ${score} / ${quizData.length}</p>
+      `;
+    }
+  }
+
+  function checkAnswer(selected) {
+    const correct = quizData[currentQuestion].answer;
+    if (selected === correct) {
+      score++;
+      document.getElementById("result").innerText = "Correct!";
+    } else {
+      document.getElementById("result").innerText = "Wrong! Correct answer: " +
+        quizData[currentQuestion].options[correct];
+    }
+    currentQuestion++;
+    setTimeout(loadQuestion, 1500);
+  }
+
+  loadQuestion();
+</script>
+
+</body>
+</html>
